@@ -7,3 +7,12 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+
+# Airport.create([{ code: 'SFO' }, { code: 'NYC' }, { code: 'LAX' }, { code: 'ORD' }, { code: 'ATL' }])
+
+Flight.create([
+  { departure_airport: Airport.find_by(code: 'SFO'), arrival_airport: Airport.find_by(code: 'NYC'), start_datetime: '2024-07-10 14:00', duration: 300 },
+  { departure_airport: Airport.find_by(code: 'LAX'), arrival_airport: Airport.find_by(code: 'ORD'), start_datetime: '2024-07-11 16:00', duration: 240 },
+  { departure_airport: Airport.find_by(code: 'ATL'), arrival_airport: Airport.find_by(code: 'SFO'), start_datetime: '2024-07-12 18:00', duration: 360 }
+])
+
