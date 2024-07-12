@@ -1,0 +1,13 @@
+<h1>Confirmar Reserva</h1>
+<p><strong>Aeroporto de Partida:</strong> <%= @flight.departure_airport.code %></p>
+<p><strong>Aeroporto de Chegada:</strong> <%= @flight.arrival_airport.code %></p>
+<p><strong>Data e Hora:</strong> <%= @flight.start_datetime %></p>
+<p><strong>Duração:</strong> <%= @flight.duration %> minutos</p>
+<p><strong>Número de Passageiros:</strong> <%= @passengers %></p>
+
+<%= form_with url: bookings_path, method: :post, local: true do %>
+  <%= hidden_field_tag :flight_id, @flight.id %>
+  <%= hidden_field_tag :passengers, @passengers %>
+  <%= submit_tag "Confirmar Reserva" %>
+<% end %>
+

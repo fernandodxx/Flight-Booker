@@ -2,45 +2,51 @@
 <%= form_with url: flights_path, method: :get, local: true do %>
   <div>
     <%= label_tag :departure_airport_id, "Aeroporto de Partida" %>
-    <%= select_tag :departure_airport_id, options_from_collection_for_select(@airports, :id, :code), include_blank: true %>
+    <%= select_tag :departure_airport_id, options_from_collection_for_select(@airports, :id, :code, params[:departure_airport_id]), include_blank: true %>
   </div>
   <div>
     <%= label_tag :arrival_airport_id, "Aeroporto de Chegada" %>
-    <%= select_tag :arrival_airport_id, options_from_collection_for_select(@airports, :id, :code), include_blank: true %>
+    <%= select_tag :arrival_airport_id, options_from_collection_for_select(@airports, :id, :code, params[:arrival_airport_id]), include_blank: true %>
   </div>
   <div>
     <%= label_tag :date, "Data" %>
-    <%= select_tag :date, options_for_select(@dates), include_blank: true %>
+    <%= select_tag :date, options_for_select(@dates, params[:date]), include_blank: true %>
   </div>
   <div>
     <%= label_tag :passengers, "Número de Passageiros" %>
-    <%= select_tag :passengers, options_for_select(1..4), include_blank: true %>
+    <%= select_tag :passengers, options_for_select(1..4, params[:passengers]), include_blank: true %>
   </div>
   <%= submit_tag "Pesquisar" %>
 <% end %>
 
 <h2>Resultados da Pesquisa</h2>
 <% if @flights.present? %>
-  <table>
-    <thead>
-      <tr>
-        <th>Aeroporto de Partida</th>
-        <th>Aeroporto de Chegada</th>
-        <th>Data e Hora</th>
-        <th>Duração</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @flights.each do |flight| %>
+  <%= form_with url: new_booking_path, method: :get, local: true do %>
+    <table>
+      <thead>
         <tr>
-          <td><%= flight.departure_airport.code %></td>
-          <td><%= flight.arrival_airport.code %></td>
-          <td><%= flight.start_datetime %></td>
-          <td><%= flight.duration %> minutos</td>
+          <th></th>
+          <th>Aeroporto de Partida</th>
+          <th>Aeroporto de Chegada</th>
+          <th>Data e Hora</th>
+          <th>Duração</th>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        <% @flights.each do |flight| %>
+          <tr>
+            <td><%= radio_button_tag :flight_id, flight.id %></td>
+            <td><%= flight.departure_airport.code %></td>
+            <td><%= flight.arrival_airport.code %></td>
+            <td><%= flight.start_datetime %></td>
+            <td><%= flight.duration %> minutos</td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <%= hidden_field_tag :passengers, params[:passengers] %>
+    <%= submit_tag "Escolher Voo" %>
+  <% end %>
 <% else %>
   <p>Nenhum voo encontrado.</p>
 <% end %>
